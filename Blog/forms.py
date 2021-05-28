@@ -7,7 +7,7 @@ class BlogForms(forms.ModelForm):
         fields = '__all__'
 
     
-    def clean(self):
-        cleaned_data=super().clean()
-        title = cleaned_data.get('title')
-        description= cleaned_data.get('description')
+    #def clean(self):
+        #cleaned_data=super().clean()
+        #title = cleaned_data.get('title')
+        #description= cleaned_data.get('description')
