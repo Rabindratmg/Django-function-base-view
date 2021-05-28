@@ -1,0 +1,12 @@
+ {% block content %}
+    <form method='POST'> {% csrf_token %}
+    <span>Tittle</span>
+    <input type='text' name='title' value={{ blog.title }}>
+    </input>
+    <span>Description</span>
+    <input type='text' name='description' value={{ blog.description }}'>
+    </input>
+    <button>update</button>
+    </form>
+
+    {% endblock %}
