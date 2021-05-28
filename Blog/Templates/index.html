@@ -1,3 +1,6 @@
+
+{% load crispy_forms_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,13 +12,13 @@
 <body>
     {% block content %}
     <form method='POST'> {% csrf_token %}
-    <span>Tittle</span>
-    <input type='text' name='title'>
-    </input>
-    <span>Description</span>
-    <input type='text' name='description'>
-    </input>
-    <button>post</button>
+    {% if form %}
+        {{ form| crispy }}
+        <button>post</button>
+    {% else %}
+        no any forms to add blog?
+
+    {% endif %}
 
     </form>
 
