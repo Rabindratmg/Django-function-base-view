@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from . models import Blog
 from django.shortcuts import redirect
 from .forms import BlogForms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib.auth import login,authenticate
 # Create your views here.
 
 def Home(request):
@@ -13,7 +16,8 @@ def Home(request):
         if form.is_valid():
             title= form.cleaned_data['title']
             description = form.cleaned_data['description']
-            b=Blog.objects.create(title=title,description=description)
+            author= form.cleaned_data['author']
+            b=Blog.objects.create(title=title,description=description,author=author)
             b.save()
             return render(request,'index.html',{'blogs':blog, 'form':form})
 
@@ -35,14 +39,31 @@ def BlogDelete(request,pk):
     return redirect('/')
 
 def BlogUpdate(request,pk):
-     if request.method=='POST':
-        if None:
-            return "Please Enter the data the data"
-        else:
-            title= request.POST['title']
-            description= request.POST['description']
-            Blog.objects.update(title=title,description=description)
+    form=BlogForms()
+    if request.method=='POST':
+        form = BlogForms(request.POST)
+        if form.is_valid():
+            title= form.cleaned_data['title']
+            description = form.cleaned_data['description']
+            author= form.cleaned_data['author']
+            b=Blog.objects.create(title=title,description=description,author=author)
+            b.save()
             return redirect('/')
-     else:
+    else:
         blog= Blog.objects.get(pk=pk)
-        return render(request,'update.html',{'blog':blog})
+        return render(request,'update.html',{'blog':blog,'form':form})
+
+
+def usercreation(request):
+    form=UserCreationForm()
+    if request.method=='POST':
+        form=UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('/')
+
+    return render(request,'register.html',{'form':form})

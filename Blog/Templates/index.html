@@ -11,26 +11,33 @@
 </head>
 <body>
     {% block content %}
-    <form method='POST'> {% csrf_token %}
-    {% if form %}
-        {{ form| crispy }}
-        <button>post</button>
-    {% else %}
-        no any forms to add blog?
 
-    {% endif %}
+        {% if user.is_authenticated %}
+            <h4> your are currently login as {{user.username }} </h4>
+            <a href= "{% url 'logout' %}"><button>logout</button></a>
 
-    </form>
+            <form method='POST'> {% csrf_token %}
+                {{ form| crispy }}
+                <button>post</button>
+            </form>
 
-        {% if blogs %}
-            {% for blog in blogs %}
-                <a href="{% url 'blogdetail' blog.id %}">{{ blog.title }}</a>
-                <p>{{ blog.description }}<p>
-            {% endfor %}
         {% else %}
-            No  blog want to add 
-        
+                <h4>Please login to post the blog</h4>
+                <a href= "{% url 'register' %}"><button>Register</button></a>
+                <a href= "{% url 'login' %}"><button>login</button></a>
         {% endif %}
+
+
+
+            {% if blogs %}
+                {% for blog in blogs %}
+                    <a href="{% url 'blogdetail' blog.id %}">{{ blog.title }}</a>   by {{ blog.author.email }} on {{blog.date_created}}
+                    <p>{{ blog.description }}<p>
+                {% endfor %}
+            {% else %}
+                No  blog want to add 
+            
+            {% endif %}
 
     {% endblock %}
 </body>
