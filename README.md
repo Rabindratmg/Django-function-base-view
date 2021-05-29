@@ -3,3 +3,5 @@
 ### Templates is in App
 
 ### Forms has been added with model form
+
+### Authentication system has been added.
